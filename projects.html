@@ -1,0 +1,146 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#101923">
+<title>FEK Flow — Projetos</title>
+<style>
+:root{--bg:#eef2f5;--card:#fff;--ink:#14202c;--muted:#6b7582;--line:#dce3e8;--brand:#0d6d5f;--blue:#3c6fc8;--red:#b64040;--amber:#b9791c;--green:#159a83}
+*{box-sizing:border-box}body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif;background:var(--bg);color:var(--ink)}
+button,input,select,textarea{font:inherit}button{cursor:pointer}
+header{position:sticky;top:0;z-index:30;background:#101923;color:#fff;padding:14px}.brand{font-size:20px;font-weight:900}.sub{font-size:12px;color:#b8c3cd}.tabs{display:flex;gap:8px;overflow:auto;margin-top:12px}.tab{border:0;border-radius:999px;padding:9px 13px;background:#21303d;color:#c1cad2;white-space:nowrap;text-decoration:none}.tab.active{background:#fff;color:#14202c;font-weight:800}
+main{max-width:1100px;margin:auto;padding:14px 14px 90px}.view{display:none}.view.active{display:block}.card{background:#fff;border:1px solid var(--line);border-radius:16px;padding:16px;margin-bottom:13px}.hero{background:linear-gradient(135deg,#10312d,#174840);color:#fff}.hero p{color:#c8d8d4}
+h1,h2,h3,h4,p{margin-top:0}p{color:var(--muted);line-height:1.5}.badge{display:inline-block;background:#ddf5ef;color:#0a6558;padding:6px 10px;border-radius:999px;font-size:11px;font-weight:900;margin-bottom:9px}
+.toolbar{display:flex;gap:8px;align-items:center;justify-content:space-between;flex-wrap:wrap}.btn{border:0;border-radius:10px;padding:10px 12px;font-weight:800}.primary{background:var(--brand);color:#fff}.secondary{background:#fff;border:1px solid var(--line)}.danger{background:var(--red);color:#fff}
+.metrics{display:grid;grid-template-columns:1fr 1fr;gap:10px}.metric{background:#fff;border:1px solid var(--line);border-radius:13px;padding:13px}.metric span,.metric small{display:block;color:var(--muted)}.metric strong{display:block;font-size:26px}
+.project-grid{display:grid;gap:12px}.project{border:1px solid var(--line);border-radius:14px;padding:15px;background:#fbfcfd}.project-top{display:flex;justify-content:space-between;gap:12px}.project small{display:block;color:var(--muted);margin-top:4px}.pill{display:inline-flex;padding:5px 8px;border-radius:999px;background:#edf1f4;font-size:10px;font-weight:900}.green{background:#daf1eb;color:var(--brand)}.blue{background:#e7eeff;color:var(--blue)}.amber{background:#fff3dd;color:#8b5d16}.red{background:#ffe8e8;color:var(--red)}
+.progress{height:8px;background:#e9eef1;border-radius:99px;overflow:hidden;margin-top:10px}.progress i{display:block;height:100%;background:var(--brand)}
+.stage{border:1px solid var(--line);border-radius:14px;background:#fbfcfd;margin-bottom:10px;overflow:hidden}.stage-head{display:flex;justify-content:space-between;align-items:center;padding:13px}.stage-body{display:none;padding:0 13px 13px}.stage.open .stage-body{display:block}.disc{background:#fff;border:1px solid var(--line);border-radius:12px;padding:11px;margin-top:9px}.task{display:grid;grid-template-columns:1fr auto;gap:10px;align-items:center;padding:10px 0;border-bottom:1px solid #edf1f3}.task:last-child{border-bottom:0}.task small{display:block;color:var(--muted);margin-top:3px}
+.columns{display:flex;gap:10px;overflow:auto}.col{min-width:82vw;max-width:330px;background:#e7edf1;border-radius:13px;padding:10px}.taskcard{background:#fff;border:1px solid var(--line);border-radius:10px;padding:11px;margin-bottom:8px}.taskcard small{display:block;color:var(--muted);margin-top:4px}
+.table-wrap{overflow:auto}.table{width:100%;border-collapse:collapse;font-size:13px}.table th,.table td{text-align:left;padding:10px;border-bottom:1px solid var(--line);white-space:nowrap}
+dialog{border:0;border-radius:18px;padding:0;width:min(94vw,700px);box-shadow:0 30px 80px rgba(0,0,0,.3)}dialog::backdrop{background:rgba(8,16,24,.6)}.modal{padding:20px}.grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}.field{display:grid;gap:5px}.field.full{grid-column:1/-1}.field input,.field select,.field textarea{width:100%;padding:11px;border:1px solid var(--line);border-radius:9px}.actions{display:flex;gap:8px;justify-content:flex-end;margin-top:14px}
+@media(min-width:760px){.metrics{grid-template-columns:repeat(4,1fr)}.project-grid{grid-template-columns:repeat(2,1fr)}.col{min-width:280px}}
+</style>
+</head>
+<body>
+<header><div class="brand">FEK Flow</div><div class="sub">Projetos como ponto de entrada do sistema</div><div class="tabs">
+<button class="tab active" data-view="projects">Projetos</button>
+<button class="tab" data-view="dashboard">Dashboard</button>
+<button class="tab" data-view="workspace">Workspace</button>
+<button class="tab" data-view="kanban">Kanban</button>
+<button class="tab" data-view="records">Registros</button>
+<a class="tab" href="users.html">Usuários</a>
+</div></header>
+<main>
+<section id="projects" class="view active">
+ <div class="card hero"><span class="badge">Módulo central</span><h1>Projetos de Engenharia</h1><p>Crie o projeto, gere automaticamente o fluxo e acompanhe as atividades até a validação.</p><button class="btn primary" id="newProject">+ Novo projeto</button></div>
+ <div class="metrics">
+  <div class="metric"><span>Projetos</span><strong id="mProjects">0</strong><small>cadastrados</small></div>
+  <div class="metric"><span>Em andamento</span><strong id="mActive">0</strong><small>desenvolvimento ativo</small></div>
+  <div class="metric"><span>Críticos</span><strong id="mCritical">0</strong><small>prioridade crítica</small></div>
+  <div class="metric"><span>Concluídos</span><strong id="mClosed">0</strong><small>100% finalizados</small></div>
+ </div>
+ <div class="card"><div class="toolbar"><div><h2>Portfólio</h2><p>Selecione um projeto para abrir o Workspace.</p></div><input id="searchProject" placeholder="Buscar código, projeto ou cliente"></div><div id="projectGrid" class="project-grid"></div></div>
+</section>
+
+<section id="dashboard" class="view">
+ <div class="card hero"><span class="badge">Visão consolidada</span><h1 id="dashTitle">Dashboard</h1><p id="dashSubtitle">Selecione um projeto para visualizar os indicadores.</p><strong id="dashPct">0% concluído</strong><div class="progress"><i id="dashBar" style="width:0%"></i></div></div>
+ <div class="metrics">
+  <div class="metric"><span>Tarefas</span><strong id="dTotal">0</strong></div>
+  <div class="metric"><span>Concluídas</span><strong id="dDone">0</strong></div>
+  <div class="metric"><span>Em execução</span><strong id="dDoing">0</strong></div>
+  <div class="metric"><span>Bloqueadas</span><strong id="dBlocked">0</strong></div>
+ </div>
+ <div class="card"><h2>Progresso por etapa</h2><div id="stageProgress"></div></div>
+</section>
+
+<section id="workspace" class="view">
+ <div class="card"><div class="toolbar"><div><span class="badge">Execução unitária</span><h2 id="workspaceTitle">Workspace</h2><p>Abra uma tarefa para executar, registrar resultado e evidência.</p></div><div><button class="btn secondary" id="expandAll">Expandir tudo</button> <button class="btn primary" id="newActivity">+ Nova atividade</button></div></div><div id="tree"></div></div>
+</section>
+
+<section id="kanban" class="view"><div class="card"><h2>Kanban do projeto</h2><div id="kanbanBoard" class="columns"></div></div></section>
+
+<section id="records" class="view"><div class="card"><h2>Histórico do projeto</h2><div class="table-wrap"><table class="table"><thead><tr><th>Data</th><th>Evento</th><th>Responsável</th></tr></thead><tbody id="recordsBody"></tbody></table></div></div></section>
+</main>
+
+<dialog id="projectDialog"><form method="dialog" class="modal" id="projectForm"><span class="badge">Novo projeto</span><h3>Criar projeto</h3><div class="grid">
+<label class="field"><span>Nome do projeto</span><input name="name" required></label>
+<label class="field"><span>Cliente</span><input name="client"></label>
+<label class="field"><span>Produto</span><input name="product"></label>
+<label class="field"><span>Família</span><input name="family"></label>
+<label class="field"><span>Tipo</span><select name="type"><option>Novo produto</option><option>Derivação</option><option>Alteração</option><option>Padronização</option></select></label>
+<label class="field"><span>Prioridade</span><select name="priority"><option>Normal</option><option>Alta</option><option>Crítica</option></select></label>
+<label class="field"><span>Data de início</span><input name="startDate" type="date"></label>
+<label class="field"><span>Prazo</span><input name="deadline" type="date"></label>
+<label class="field"><span>PBTC (kg)</span><input name="pbtc" type="number"></label>
+<label class="field"><span>Quantidade de eixos</span><input name="axles" type="number"></label>
+<label class="field full"><span>Descrição / escopo</span><textarea name="description" rows="4"></textarea></label>
+</div><div class="actions"><button class="btn secondary" value="cancel">Cancelar</button><button class="btn primary" id="saveProject" value="default">Criar projeto</button></div></form></dialog>
+
+<dialog id="taskDialog"><form method="dialog" class="modal" id="taskForm"><span class="badge">Executar atividade</span><h3 id="taskTitle"></h3><p id="taskContext"></p><div class="grid">
+<label class="field"><span>Responsável</span><input name="owner"></label>
+<label class="field"><span>Status</span><select name="status"><option>Pendente</option><option>Em execução</option><option>Em revisão</option><option>Concluído</option><option>Bloqueado</option></select></label>
+<label class="field"><span>Prioridade</span><select name="priority"><option>Baixa</option><option>Normal</option><option>Alta</option><option>Crítica</option></select></label>
+<label class="field"><span>Prazo</span><input name="deadline" type="date"></label>
+<label class="field full"><span>Resultado / saída</span><textarea name="result" rows="4"></textarea></label>
+<label class="field full"><span>Evidência, arquivo ou link</span><input name="evidence"></label>
+<label class="field full"><span>Observações técnicas</span><textarea name="notes" rows="4"></textarea></label>
+</div><div class="actions"><button class="btn secondary" value="cancel">Fechar</button><button class="btn primary" id="saveTask" value="default">Salvar execução</button></div></form></dialog>
+
+<dialog id="activityDialog"><form method="dialog" class="modal" id="activityForm"><span class="badge">Nova atividade</span><h3>Criar atividade no projeto</h3><div class="grid">
+<label class="field full"><span>Título</span><input name="title" required></label>
+<label class="field"><span>Etapa</span><select name="stage"></select></label>
+<label class="field"><span>Disciplina</span><input name="discipline" placeholder="Ex.: Estrutura"></label>
+<label class="field"><span>Responsável</span><input name="owner"></label>
+<label class="field"><span>Prazo</span><input name="deadline" type="date"></label>
+<label class="field"><span>Prioridade</span><select name="priority"><option>Normal</option><option>Alta</option><option>Crítica</option></select></label>
+<label class="field"><span>Status</span><select name="status"><option>Pendente</option><option>Em execução</option></select></label>
+<label class="field full"><span>Descrição</span><textarea name="description" rows="4"></textarea></label>
+</div><div class="actions"><button class="btn secondary" value="cancel">Cancelar</button><button class="btn primary" id="saveActivity" value="default">Criar atividade</button></div></form></dialog>
+
+<script>
+(function(){
+"use strict";
+var template=[{"name":"1. Solicitação de Desenvolvimento","disciplines":[{"name":"Entradas e requisitos","tasks":["Identificar solicitante e área","Definir cliente, aplicação e família do produto","Registrar capacidade de carga e dimensões","Registrar configurações e opcionais","Anexar referências e documentos","Indicar requisitos legais","Definir prazo solicitado","Verificar suficiência das entradas","Aprovar ou devolver a SD"]}]},{"name":"2. Análise Crítica","disciplines":[{"name":"Viabilidade e planejamento","tasks":["Analisar viabilidade técnica","Verificar normas e resoluções","Avaliar projetos semelhantes","Definir projeto novo ou derivação","Identificar setores impactados","Avaliar recursos e capacidade","Registrar riscos iniciais","Definir cronograma e responsáveis","Avaliar ferramental e impacto produtivo","Emitir parecer da análise crítica"]}]},{"name":"3. Detalhamento Multidisciplinar","disciplines":[{"name":"Estrutura","tasks":["Determinar capacidade de carga","Definir geometria geral","Calcular distribuição de carga","Determinar reações no pino-rei e suspensão","Verificar PBT e PBTC","Definir eixos e suspensão","Selecionar matéria-prima","Verificar limites dimensionais","Analisar interferências","Gerar modelo 3D e desenhos","Executar FEA quando aplicável"]},{"name":"Caixa e acabamento","tasks":["Dimensionar caixa de carga","Definir capacidade volumétrica","Selecionar matéria-prima","Definir sinalização e faixas refletivas","Gerar modelos e desenhos"]},{"name":"Montagem","tasks":["Realizar montagem geral 3D","Simular movimentos","Analisar montabilidade","Verificar acesso de ferramentas","Gerar instrução de montagem","Gerar prospecto e desenho para AET"]},{"name":"Sistemas","tasks":["Definir suspensão","Dimensionar suportes e vigas de eixo","Definir sistema hidráulico","Definir sistema pneumático","Definir sistema elétrico","Gerar diagramas e listas técnicas"]}]},{"name":"4. Revisão, Aprovação e Liberação","disciplines":[{"name":"Documentação Técnica","tasks":["Conferir identificação e revisão","Conferir vistas, cotas e tolerâncias","Conferir matéria-prima","Verificar lista de materiais","Verificar peças duplicadas","Controlar arquivos obsoletos","Aprovar ou devolver desenhos","Cadastrar códigos e liberar BOM"]}]},{"name":"5. Produção e Protótipo","disciplines":[{"name":"Produção","tasks":["Solicitar Ordem de Produção","Apresentar projeto à fábrica","Acompanhar fabricação das peças","Acompanhar montagem final","Registrar dificuldades e alterações","Verificar dimensões","Realizar pesagem","Comparar tara real e prevista"]}]},{"name":"6. Verificação e Validação","disciplines":[{"name":"Validação multidisciplinar","tasks":["Colher parecer da Engenharia","Colher parecer da Produção","Colher parecer de Processos","Colher parecer da Qualidade","Colher parecer de PCP, Compras e Custos","Avaliar montabilidade e conformidade","Anexar FEA e FMEA","Executar teste de campo","Registrar aceite do cliente","Aprovar, corrigir ou reprovar protótipo"]}]},{"name":"7. Homologação e Configurador","disciplines":[{"name":"Homologação","tasks":["Preparar memorial e desenhos","Reunir relatórios de ensaio","Confirmar CCT","Protocolar CAT","Responder exigências","Obter código Marca/Modelo/Versão"]},{"name":"Configurador","tasks":["Conferir BOM 150%","Cadastrar variáveis e opcionais","Informar TARA e RENAVAM","Testar combinações","Aprovar configurador","Emitir lançamento"]}]},{"name":"8. Pós-lançamento e Alterações","disciplines":[{"name":"Alterações","tasks":["Abrir SA","Analisar impacto em estoque, ferramental e custos","Atualizar desenhos e BOM","Comunicar áreas impactadas","Atualizar catálogos e manuais","Bloquear produtos inativos"]},{"name":"Conhecimento","tasks":["Registrar falhas de campo","Registrar lições aprendidas","Vincular decisão técnica ao componente","Atualizar banco de conhecimento"]}]}];
+var KEY="fekProjectsV1",state;try{state=JSON.parse(localStorage.getItem(KEY))}catch(e){}if(!state)state={projects:[],activeProjectId:null};
+var currentTaskKey="",expanded=false;
+function el(id){return document.getElementById(id)}function save(){localStorage.setItem(KEY,JSON.stringify(state))}
+function esc(v){return String(v||"").replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/"/g,"&quot;")}
+function code(){var y=new Date().getFullYear(),n=state.projects.length+1;return"FEK-"+y+"-"+String(n).padStart(3,"0")}
+function createTasks(){var o={};template.forEach(function(s,si){s.disciplines.forEach(function(d,di){d.tasks.forEach(function(t,ti){o[si+"|"+di+"|"+ti]={title:t,stage:s.name,discipline:d.name,status:"Pendente",priority:"Normal"}})})});return o}
+function active(){return state.projects.find(function(p){return p.id===state.activeProjectId})||null}
+function projectTasks(p){return Object.keys(p.tasks||{}).map(function(k){return Object.assign({key:k},p.tasks[k])})}
+function progress(p){var a=projectTasks(p),d=a.filter(function(t){return t.status==="Concluído"}).length;return a.length?Math.round(d/a.length*100):0}
+function log(p,event,owner){p.records=p.records||[];p.records.push({date:new Date().toLocaleString("pt-BR"),event:event,owner:owner||"Sistema"})}
+function renderProjects(){var q=el("searchProject").value.toLowerCase(),list=state.projects.filter(function(p){return !q||[p.code,p.name,p.client,p.product].join(" ").toLowerCase().indexOf(q)>=0});
+ el("mProjects").textContent=state.projects.length;el("mActive").textContent=state.projects.filter(function(p){return progress(p)<100}).length;el("mCritical").textContent=state.projects.filter(function(p){return p.priority==="Crítica"}).length;el("mClosed").textContent=state.projects.filter(function(p){return progress(p)===100}).length;
+ el("projectGrid").innerHTML=list.length?list.map(function(p){var pc=progress(p);return'<article class="project"><div class="project-top"><div><span class="badge">'+esc(p.code)+'</span><h3>'+esc(p.name)+'</h3><small>'+esc((p.client||"Sem cliente")+" • "+(p.product||"Produto não informado"))+'</small></div><span class="pill '+(p.priority==="Crítica"?"red":p.priority==="Alta"?"amber":"blue")+'">'+esc(p.priority)+'</span></div><div class="progress"><i style="width:'+pc+'%"></i></div><small>'+pc+'% concluído • '+esc(p.type)+'</small><div class="actions" style="justify-content:flex-start"><button class="btn primary" data-open-project="'+p.id+'">Abrir projeto</button><button class="btn secondary" data-delete-project="'+p.id+'">Excluir</button></div></article>'}).join(""):'<p>Nenhum projeto cadastrado. Clique em “Novo projeto”.</p>';
+ document.querySelectorAll("[data-open-project]").forEach(function(b){b.onclick=function(){state.activeProjectId=b.dataset.openProject;save();switchView("workspace");renderAll()}});
+ document.querySelectorAll("[data-delete-project]").forEach(function(b){b.onclick=function(){if(!confirm("Excluir este projeto?"))return;state.projects=state.projects.filter(function(p){return p.id!==b.dataset.deleteProject});if(state.activeProjectId===b.dataset.deleteProject)state.activeProjectId=null;save();renderAll()}});
+}
+function renderDashboard(){var p=active();if(!p){el("dashTitle").textContent="Dashboard";el("dashSubtitle").textContent="Selecione um projeto.";["dTotal","dDone","dDoing","dBlocked"].forEach(function(id){el(id).textContent="0"});el("stageProgress").innerHTML="";return}
+ var a=projectTasks(p),done=a.filter(function(t){return t.status==="Concluído"}).length,doing=a.filter(function(t){return t.status==="Em execução"}).length,blocked=a.filter(function(t){return t.status==="Bloqueado"}).length,pc=progress(p);el("dashTitle").textContent=p.code+" — "+p.name;el("dashSubtitle").textContent=(p.client||"Sem cliente")+" • "+(p.product||"Produto não informado");el("dashPct").textContent=pc+"% concluído";el("dashBar").style.width=pc+"%";el("dTotal").textContent=a.length;el("dDone").textContent=done;el("dDoing").textContent=doing;el("dBlocked").textContent=blocked;
+ el("stageProgress").innerHTML=template.map(function(s,si){var q=a.filter(function(t){return t.stage===s.name}),d=q.filter(function(t){return t.status==="Concluído"}).length,pp=q.length?Math.round(d/q.length*100):0;return'<div class="stage"><div class="stage-head"><strong>'+esc(s.name)+'</strong><span>'+d+'/'+q.length+' • '+pp+'%</span></div><div class="progress"><i style="width:'+pp+'%"></i></div></div>'}).join("");
+}
+function renderWorkspace(){var p=active();el("workspaceTitle").textContent=p?p.code+" — "+p.name:"Workspace";if(!p){el("tree").innerHTML="<p>Selecione ou crie um projeto.</p>";return}
+ var a=projectTasks(p);el("tree").innerHTML=template.map(function(s,si){var body=s.disciplines.map(function(d,di){var rows=a.filter(function(t){return t.stage===s.name&&t.discipline===d.name}).map(function(t){return'<div class="task"><div><strong>'+esc(t.title)+'</strong><small>'+esc((t.owner||"Sem responsável")+" • "+t.status)+'</small></div><button class="btn primary" data-open-task="'+t.key+'">Executar</button></div>'}).join("");return rows?'<div class="disc"><h4>'+esc(d.name)+'</h4>'+rows+'</div>':""}).join("");var extra=a.filter(function(t){return t.stage===s.name&&!s.disciplines.some(function(d){return d.name===t.discipline})}).map(function(t){return'<div class="task"><div><strong>'+esc(t.title)+'</strong><small>'+esc((t.discipline||"Atividade avulsa")+" • "+(t.owner||"Sem responsável")+" • "+t.status)+'</small></div><button class="btn primary" data-open-task="'+t.key+'">Executar</button></div>'}).join("");if(extra)body+='<div class="disc"><h4>Atividades adicionais</h4>'+extra+'</div>';return'<div class="stage '+(expanded?"open":"")+'"><div class="stage-head" data-toggle><strong>'+esc(s.name)+'</strong></div><div class="stage-body">'+body+'</div></div>'}).join("");
+ document.querySelectorAll("[data-toggle]").forEach(function(h){h.onclick=function(){h.parentElement.classList.toggle("open")}});document.querySelectorAll("[data-open-task]").forEach(function(b){b.onclick=function(){openTask(b.dataset.openTask)}})
+}
+function renderKanban(){var p=active();if(!p){el("kanbanBoard").innerHTML="<p>Selecione um projeto.</p>";return}var a=projectTasks(p),cols=["Pendente","Em execução","Em revisão","Concluído","Bloqueado"];el("kanbanBoard").innerHTML=cols.map(function(c){var q=a.filter(function(t){return t.status===c});return'<div class="col"><h3>'+c+' ('+q.length+')</h3>'+q.map(function(t){return'<div class="taskcard"><strong>'+esc(t.title)+'</strong><small>'+esc(t.stage)+'</small><small>'+esc(t.owner||"Sem responsável")+'</small><button class="btn primary" data-open-task="'+t.key+'" style="margin-top:8px">Abrir</button></div>'}).join("")+'</div>'}).join("");document.querySelectorAll("#kanbanBoard [data-open-task]").forEach(function(b){b.onclick=function(){openTask(b.dataset.openTask)}})}
+function renderRecords(){var p=active();el("recordsBody").innerHTML=p&&p.records&&p.records.length?p.records.slice().reverse().map(function(r){return"<tr><td>"+esc(r.date)+"</td><td>"+esc(r.event)+"</td><td>"+esc(r.owner)+"</td></tr>"}).join(""):'<tr><td colspan="3">Nenhum registro.</td></tr>'}
+function renderAll(){renderProjects();renderDashboard();renderWorkspace();renderKanban();renderRecords()}
+function switchView(v){document.querySelectorAll(".tab[data-view]").forEach(function(b){b.classList.toggle("active",b.dataset.view===v)});document.querySelectorAll(".view").forEach(function(x){x.classList.toggle("active",x.id===v)})}
+function openTask(k){var p=active(),t=p.tasks[k];currentTaskKey=k;el("taskTitle").textContent=t.title;el("taskContext").textContent=t.stage+" • "+t.discipline;var f=el("taskForm");["owner","status","priority","deadline","result","evidence","notes"].forEach(function(n){if(f.elements[n])f.elements[n].value=t[n]||""});el("taskDialog").showModal()}
+document.querySelectorAll(".tab[data-view]").forEach(function(b){b.onclick=function(){switchView(b.dataset.view);renderAll()}});
+el("newProject").onclick=function(){el("projectForm").reset();el("projectDialog").showModal()};
+el("saveProject").onclick=function(e){e.preventDefault();var fd=new FormData(el("projectForm")),p={id:"prj-"+Date.now(),code:code(),tasks:createTasks(),records:[]};fd.forEach(function(v,k){p[k]=v});log(p,"Projeto criado","Sistema");state.projects.push(p);state.activeProjectId=p.id;save();el("projectDialog").close();switchView("workspace");renderAll()};
+el("saveTask").onclick=function(e){e.preventDefault();var p=active(),fd=new FormData(el("taskForm")),t=p.tasks[currentTaskKey];fd.forEach(function(v,k){t[k]=v});log(p,"Tarefa atualizada: "+t.title,t.owner||"Usuário");save();el("taskDialog").close();renderAll()};
+el("newActivity").onclick=function(){var p=active();if(!p){alert("Crie ou selecione um projeto.");return}el("activityForm").reset();el("activityForm").elements.stage.innerHTML=template.map(function(s){return"<option>"+s.name+"</option>"}).join("");el("activityDialog").showModal()};
+el("saveActivity").onclick=function(e){e.preventDefault();var p=active(),fd=new FormData(el("activityForm")),t={};fd.forEach(function(v,k){t[k]=v});var k="custom-"+Date.now();p.tasks[k]=t;log(p,"Atividade criada: "+t.title,t.owner||"Usuário");save();el("activityDialog").close();renderAll()};
+el("expandAll").onclick=function(){expanded=!expanded;el("expandAll").textContent=expanded?"Recolher tudo":"Expandir tudo";renderWorkspace()};
+el("searchProject").oninput=renderProjects;
+renderAll();
+})();
+</script>
+</body></html>
