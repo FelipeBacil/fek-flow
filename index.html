@@ -1,1 +1,186 @@
-<!doctype html><html lang="pt-BR"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><title>FEK Flow — Engenharia de Produto</title><link rel="stylesheet" href="styles.css"></head><body><header><div class="brand"><div class="logo">F</div><div><strong>FEK Flow</strong><span>Fluxo total da Engenharia de Produto</span></div></div><div class="tabs"><button class="tab active" data-view="geral">Geral</button><button class="tab" data-view="fluxo">Fluxo total</button><button class="tab" data-view="simulador">Simulador</button><button class="tab" data-view="kanban">Kanban</button><button class="tab" data-view="registros">Registros</button></div></header><main><section id="geral" class="view active"><div class="card hero"><span class="badge">Versão ampliada</span><h1>Processo completo com tarefas internas</h1><p>Macroetapas, disciplinas, tarefas, responsáveis, status, dependências, evidências, gates e histórico em uma única estrutura.</p><strong id="globalText">0% concluído</strong><div class="progress"><i id="globalBar" style="width:0%"></i></div></div><div class="metrics"><div class="metric"><span>Macroetapas</span><strong id="mStages">0</strong><small>no fluxo</small></div><div class="metric"><span>Tarefas</span><strong id="mTasks">0</strong><small>totais</small></div><div class="metric"><span>Concluídas</span><strong id="mDone">0</strong><small>executadas</small></div><div class="metric"><span>Bloqueadas</span><strong id="mBlocked">0</strong><small>dependências</small></div></div><div class="card"><span class="eyebrow">Visão executiva</span><h2>Resumo por etapa</h2><div id="stageSummary"></div></div></section><section id="fluxo" class="view"><div class="card"><div class="toolbar"><div><span class="eyebrow">Estrutura completa</span><h2>Árvore do desenvolvimento</h2></div><button class="btn secondary" id="expandAll">Expandir tudo</button></div><div id="tree" class="tree"></div></div></section><section id="simulador" class="view"><div class="card"><span class="eyebrow">Execução orientada</span><h2>Simulador por etapa</h2><p>Escolha a etapa, conclua as tarefas internas e valide o gate.</p><div class="toolbar"><select id="stageSelect"></select><button class="btn secondary" id="resetStage">Reiniciar etapa</button></div></div><div class="card"><div id="simFlow" class="flow"></div></div><div class="card"><h3 id="simTitle"></h3><p id="simDesc"></p><div id="simTasks"></div><div class="actions" style="margin-top:14px"><button class="btn primary" id="approveGate">Validar gate</button><button class="btn danger" id="rejectGate">Reprovar gate</button><button class="btn secondary" id="addEvidence">Adicionar evidência</button></div></div></section><section id="kanban" class="view"><div class="card"><div class="toolbar"><div><span class="eyebrow">Gestão operacional</span><h2>Kanban de tarefas</h2></div><button class="btn primary" id="newTask">Nova tarefa</button></div><div id="kanbanBoard" class="columns" style="margin-top:14px"></div></div></section><section id="registros" class="view"><div class="card"><span class="eyebrow">Rastreabilidade</span><h2>Histórico de eventos</h2><div class="table-wrap"><table class="table"><thead><tr><th>Data</th><th>Etapa</th><th>Evento</th><th>Responsável</th></tr></thead><tbody id="recordsBody"></tbody></table></div></div></section></main><script src="app.js"></script></body></html>
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#101923">
+<title>FEK Flow — Versão Final</title>
+<style>
+:root{--bg:#eef2f5;--card:#fff;--ink:#14202c;--muted:#687483;--line:#dce3e8;--brand:#0d6d5f;--brand2:#1aa38b;--blue:#3c6fc8;--red:#b64040;--amber:#b7791f;--shadow:0 14px 34px rgba(26,40,52,.08)}
+*{box-sizing:border-box}body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif;background:var(--bg);color:var(--ink)}
+button,input,select,textarea{font:inherit}button{cursor:pointer}
+header{position:sticky;top:0;z-index:40;background:#101923;color:#fff;padding:14px}
+.brand{display:flex;gap:10px;align-items:center}.logo{width:42px;height:42px;border-radius:13px;background:linear-gradient(135deg,var(--brand2),#77dac6);display:grid;place-items:center;font-size:22px;font-weight:900}
+.brand strong,.brand span{display:block}.brand span{font-size:12px;color:#b7c3cd}.session{margin-top:3px;font-size:11px;color:#94a6b5}
+.tabs{display:flex;gap:8px;overflow:auto;margin-top:12px;scrollbar-width:none}.tabs::-webkit-scrollbar{display:none}
+.tab{border:0;border-radius:999px;padding:9px 13px;background:#21303d;color:#c1cad2;white-space:nowrap}.tab.active{background:#fff;color:#14202c;font-weight:800}
+main{max-width:1120px;margin:auto;padding:14px 14px 95px}.view{display:none}.view.active{display:block}
+.card{background:#fff;border:1px solid var(--line);border-radius:17px;padding:17px;margin-bottom:14px;box-shadow:var(--shadow)}
+.hero{background:linear-gradient(135deg,#10312d,#174840);color:#fff}.hero p{color:#c8d8d4}
+h1,h2,h3,h4,p{margin-top:0}h1{font-size:27px}h2{font-size:23px}h3{font-size:18px}p{color:var(--muted);line-height:1.5}
+.badge{display:inline-flex;padding:6px 10px;border-radius:999px;background:#ddf5ef;color:#0a6558;font-size:11px;font-weight:900;margin-bottom:10px}
+.progress{height:9px;background:rgba(255,255,255,.18);border-radius:99px;overflow:hidden}.progress i{display:block;height:100%;background:#7adfc9}
+.metrics{display:grid;grid-template-columns:1fr 1fr;gap:10px}.metric{background:#fff;border:1px solid var(--line);border-radius:14px;padding:14px}.metric span,.metric small{display:block;color:var(--muted)}.metric strong{display:block;font-size:27px}
+.toolbar{display:flex;gap:8px;justify-content:space-between;align-items:center;flex-wrap:wrap}.toolbar input,.toolbar select{padding:10px;border:1px solid var(--line);border-radius:10px;background:#fff}
+.btn{border:0;border-radius:10px;padding:10px 12px;font-weight:800}.primary{background:var(--brand);color:#fff}.secondary{background:#fff;border:1px solid var(--line)}.danger{background:var(--red);color:#fff}.soft{background:#e5f3ef;color:var(--brand)}
+.stage{border:1px solid var(--line);border-radius:14px;background:#fbfcfd;margin-bottom:10px;overflow:hidden}.stage-head{display:flex;justify-content:space-between;gap:10px;align-items:center;padding:13px}.stage-body{display:none;padding:0 13px 13px}.stage.open .stage-body{display:block}
+.disc{background:#fff;border:1px solid var(--line);border-radius:12px;padding:11px;margin-top:9px}.task{display:grid;grid-template-columns:1fr auto;gap:10px;align-items:center;padding:10px 0;border-bottom:1px solid #edf1f3}.task:last-child{border-bottom:0}.task small{display:block;color:var(--muted);margin-top:3px}.task.mine{background:#f3fbf8}.task.blocked{background:#fff5f5}
+.pill{display:inline-flex;padding:5px 8px;border-radius:999px;background:#edf1f4;font-size:10px;font-weight:900}.pill.green{background:#daf1eb;color:var(--brand)}.pill.red{background:#ffe8e8;color:var(--red)}.pill.amber{background:#fff3dd;color:#875912}.pill.blue{background:#e6edff;color:var(--blue)}
+.mini{height:7px;background:#edf1f3;border-radius:99px;overflow:hidden;margin-top:8px}.mini i{display:block;height:100%;background:var(--brand)}
+.columns{display:flex;gap:10px;overflow:auto}.col{min-width:82vw;max-width:330px;background:#e7edf1;border-radius:13px;padding:10px}.taskcard{background:#fff;border:1px solid var(--line);border-radius:10px;padding:11px;margin-bottom:8px}.taskcard small{display:block;color:var(--muted);margin-top:4px}
+.grid{display:grid;gap:13px}.status-row{display:grid;grid-template-columns:105px 1fr 40px;gap:8px;align-items:center;margin-bottom:9px}.bar{height:10px;background:#edf1f3;border-radius:99px;overflow:hidden}.bar i{display:block;height:100%}
+.table-wrap{overflow:auto}.table{width:100%;border-collapse:collapse;font-size:13px}.table th,.table td{text-align:left;padding:10px;border-bottom:1px solid var(--line);white-space:nowrap}
+.user-grid{display:grid;gap:10px}.user-card{border:1px solid var(--line);border-radius:14px;padding:14px;background:#fbfcfd}.avatar{width:42px;height:42px;border-radius:13px;background:#dff4ef;color:var(--brand);display:grid;place-items:center;font-weight:900}.user-main{display:flex;gap:10px;align-items:flex-start}.actions{display:flex;gap:7px;flex-wrap:wrap;margin-top:11px}
+dialog{border:0;border-radius:18px;padding:0;width:min(94vw,650px);box-shadow:0 30px 80px rgba(0,0,0,.3)}dialog::backdrop{background:rgba(8,16,24,.6)}.modal{padding:20px}.fields{display:grid;grid-template-columns:1fr 1fr;gap:10px}.field{display:grid;gap:5px}.field.full{grid-column:1/-1}.field input,.field select,.field textarea{width:100%;padding:11px;border:1px solid var(--line);border-radius:9px}
+.section{border:1px solid var(--line);border-radius:12px;padding:12px;margin-top:10px;background:#fbfcfd}.note{font-size:12px;color:#76531d;background:#fff8eb;border-radius:9px;padding:9px;margin-top:10px}
+.empty{padding:22px;text-align:center;color:var(--muted)}
+@media(min-width:760px){.metrics{grid-template-columns:repeat(6,1fr)}.grid.two{grid-template-columns:1.1fr .9fr}.user-grid{grid-template-columns:repeat(2,1fr)}.col{min-width:280px}}
+</style>
+</head>
+<body>
+<header>
+ <div class="brand"><div class="logo">F</div><div><strong>FEK Flow</strong><span>Versão final consolidada</span><div class="session" id="sessionText"></div></div></div>
+ <div class="tabs">
+  <button class="tab active" data-view="dashboard">Dashboard</button>
+  <button class="tab" data-view="flow">Fluxo</button>
+  <button class="tab" data-view="workspace">Workspace</button>
+  <button class="tab" data-view="kanban">Kanban</button>
+  <button class="tab" data-view="users">Usuários</button>
+  <button class="tab" data-view="records">Registros</button>
+  <button class="tab" data-view="backup">Armazenamento</button>
+ </div>
+</header>
+<main>
+<section id="dashboard" class="view active">
+ <div class="card hero"><span class="badge">Versão final</span><h1>Controle integral da Engenharia de Produto</h1><p>Fluxo, execução unitária, usuários, responsáveis, evidências, dashboard, gates, histórico e backup em uma única aplicação.</p><strong id="pctText">0% concluído</strong><div class="progress"><i id="pctBar"></i></div></div>
+ <div class="metrics">
+  <div class="metric"><span>Tarefas</span><strong id="mTotal">0</strong><small>escopo total</small></div>
+  <div class="metric"><span>Concluídas</span><strong id="mDone">0</strong><small>aprovadas</small></div>
+  <div class="metric"><span>Em execução</span><strong id="mDoing">0</strong><small>trabalho ativo</small></div>
+  <div class="metric"><span>Em revisão</span><strong id="mReview">0</strong><small>aguardando análise</small></div>
+  <div class="metric"><span>Bloqueadas</span><strong id="mBlocked">0</strong><small>impedimentos</small></div>
+  <div class="metric"><span>Evidências</span><strong id="mEvidence">0</strong><small>registros salvos</small></div>
+ </div>
+ <div class="grid two">
+  <div class="card"><h2>Progresso por etapa</h2><div id="stageProgress"></div></div>
+  <div class="card"><h2>Distribuição por status</h2><div id="statusChart"></div></div>
+ </div>
+ <div class="grid two">
+  <div class="card"><h2>Atenção gerencial</h2><div id="attention"></div></div>
+  <div class="card"><h2>Carga por responsável</h2><div id="owners"></div></div>
+ </div>
+</section>
+
+<section id="flow" class="view">
+ <div class="card"><div class="toolbar"><div><span class="badge">Estrutura completa</span><h2>Árvore do desenvolvimento</h2></div><button class="btn secondary" id="expandAll">Expandir tudo</button></div><div id="flowTree"></div></div>
+</section>
+
+<section id="workspace" class="view">
+ <div class="card">
+  <div class="toolbar"><div><span class="badge">Execução unitária</span><h2>Workspace das atividades</h2><p>Cada tarefa possui ficha própria de execução e evidência.</p></div><select id="taskFilter"><option value="all">Todas as tarefas</option><option value="mine">Minhas tarefas</option><option value="unassigned">Sem responsável</option><option value="blocked">Bloqueadas</option></select></div>
+  <div id="workspaceTree"></div>
+ </div>
+</section>
+
+<section id="kanban" class="view"><div class="card"><h2>Kanban automático</h2><div id="kanbanBoard" class="columns"></div></div></section>
+
+<section id="users" class="view">
+ <div class="card hero"><span class="badge">Equipe</span><h1>Usuários, papéis e responsabilidades</h1><p>O usuário ativo registra alterações e pode receber tarefas.</p><strong id="activeUserSummary"></strong></div>
+ <div class="card"><div class="toolbar"><div><h2>Usuários</h2><p>Cadastre, edite, ative e altere a sessão local.</p></div><button class="btn primary" id="newUserBtn">Novo usuário</button></div><div id="userGrid" class="user-grid"></div></div>
+</section>
+
+<section id="records" class="view">
+ <div class="card"><div class="toolbar"><div><h2>Histórico e rastreabilidade</h2><p>Registro cronológico das ações realizadas.</p></div><button class="btn secondary" id="clearRecords">Limpar histórico</button></div><div class="table-wrap"><table class="table"><thead><tr><th>Data</th><th>Usuário</th><th>Etapa</th><th>Evento</th></tr></thead><tbody id="recordsBody"></tbody></table></div></div>
+</section>
+
+<section id="backup" class="view">
+ <div class="card hero"><span class="badge">Armazenamento local controlado</span><h1>Backup e restauração</h1><p>Os dados são salvos automaticamente neste navegador. Exporte o arquivo JSON para manter uma cópia externa ou migrar para outro dispositivo.</p></div>
+ <div class="card">
+  <h2>Operações de armazenamento</h2>
+  <div class="actions">
+   <button class="btn primary" id="exportBtn">Exportar backup JSON</button>
+   <label class="btn secondary" style="display:inline-flex">Importar backup<input id="importFile" type="file" accept=".json,application/json" hidden></label>
+   <button class="btn danger" id="resetBtn">Restaurar sistema</button>
+  </div>
+  <div class="note">Esta versão final utiliza armazenamento local do navegador. Os dados não sincronizam automaticamente entre dispositivos. A exportação JSON é o mecanismo oficial de segurança e transferência desta versão.</div>
+  <div class="section"><h3>Resumo do armazenamento</h3><div id="storageSummary"></div></div>
+ </div>
+</section>
+</main>
+
+<dialog id="taskDialog"><form method="dialog" class="modal" id="taskForm"><span class="badge">Executar atividade</span><h3 id="taskDialogTitle"></h3><p id="taskDialogContext"></p><div id="taskFields"></div><div class="actions" style="justify-content:flex-end"><button class="btn secondary" value="cancel">Fechar</button><button class="btn primary" id="saveTaskBtn" value="default">Salvar execução</button></div></form></dialog>
+<dialog id="userDialog"><form method="dialog" class="modal" id="userForm"><span class="badge">Usuário</span><h3 id="userDialogTitle">Novo usuário</h3><input type="hidden" name="id"><div class="fields"><label class="field"><span>Nome</span><input name="name" required></label><label class="field"><span>E-mail</span><input name="email" type="email"></label><label class="field"><span>Setor</span><input name="department"></label><label class="field"><span>Função</span><select name="role"><option>Administrador</option><option>Gerência EPR</option><option>Engenharia / Projetista</option><option>Documentação Técnica</option><option>Processos / Qualidade</option><option>Leitor</option></select></label><label class="field"><span>Status</span><select name="status"><option>Ativo</option><option>Inativo</option></select></label><label class="field"><span>Telefone</span><input name="phone"></label></div><div class="actions" style="justify-content:flex-end"><button class="btn secondary" value="cancel">Cancelar</button><button class="btn primary" id="saveUserBtn" value="default">Salvar</button></div></form></dialog>
+
+<script>
+(function(){
+"use strict";
+var stages=[{"name":"1. Solicitação de Desenvolvimento","disciplines":[{"name":"Entradas e requisitos","tasks":["Identificar solicitante e área","Definir cliente, aplicação e família do produto","Registrar capacidade de carga e dimensões","Registrar configurações e opcionais","Anexar referências e documentos","Indicar requisitos legais","Definir prazo solicitado","Verificar suficiência das entradas","Aprovar ou devolver a SD"]}]},{"name":"2. Análise Crítica","disciplines":[{"name":"Viabilidade e planejamento","tasks":["Analisar viabilidade técnica","Verificar normas e resoluções","Avaliar projetos semelhantes","Definir projeto novo ou derivação","Identificar setores impactados","Avaliar recursos e capacidade","Registrar riscos iniciais","Definir cronograma e responsáveis","Avaliar ferramental e impacto produtivo","Emitir parecer da análise crítica"]}]},{"name":"3. Detalhamento Multidisciplinar","disciplines":[{"name":"Estrutura","tasks":["Determinar capacidade de carga","Definir geometria geral","Calcular distribuição de carga","Determinar reações no pino-rei e suspensão","Verificar PBT e PBTC","Definir eixos e suspensão","Selecionar matéria-prima","Verificar limites dimensionais","Analisar interferências","Gerar modelo 3D e desenhos","Executar FEA quando aplicável"]},{"name":"Caixa e acabamento","tasks":["Dimensionar caixa de carga","Definir capacidade volumétrica","Selecionar matéria-prima","Definir sinalização e faixas refletivas","Gerar modelos e desenhos"]},{"name":"Montagem","tasks":["Realizar montagem geral 3D","Simular movimentos","Analisar montabilidade","Verificar acesso de ferramentas","Gerar instrução de montagem","Gerar prospecto e desenho para AET"]},{"name":"Sistemas","tasks":["Definir suspensão","Dimensionar suportes e vigas de eixo","Definir sistema hidráulico","Definir sistema pneumático","Definir sistema elétrico","Gerar diagramas e listas técnicas"]}]},{"name":"4. Revisão, Aprovação e Liberação","disciplines":[{"name":"Documentação Técnica","tasks":["Conferir identificação e revisão","Conferir vistas, cotas e tolerâncias","Conferir matéria-prima","Verificar lista de materiais","Verificar peças duplicadas","Controlar arquivos obsoletos","Aprovar ou devolver desenhos","Cadastrar códigos e liberar BOM"]}]},{"name":"5. Produção e Protótipo","disciplines":[{"name":"Produção","tasks":["Solicitar Ordem de Produção","Apresentar projeto à fábrica","Acompanhar fabricação das peças","Acompanhar montagem final","Registrar dificuldades e alterações","Verificar dimensões","Realizar pesagem","Comparar tara real e prevista"]}]},{"name":"6. Verificação e Validação","disciplines":[{"name":"Validação multidisciplinar","tasks":["Colher parecer da Engenharia","Colher parecer da Produção","Colher parecer de Processos","Colher parecer da Qualidade","Colher parecer de PCP, Compras e Custos","Avaliar montabilidade e conformidade","Anexar FEA e FMEA","Executar teste de campo","Registrar aceite do cliente","Aprovar, corrigir ou reprovar protótipo"]}]},{"name":"7. Homologação e Configurador","disciplines":[{"name":"Homologação","tasks":["Preparar memorial e desenhos","Reunir relatórios de ensaio","Confirmar CCT","Protocolar CAT","Responder exigências","Obter código Marca/Modelo/Versão"]},{"name":"Configurador","tasks":["Conferir BOM 150%","Cadastrar variáveis e opcionais","Informar TARA e RENAVAM","Testar combinações","Aprovar configurador","Emitir lançamento"]}]},{"name":"8. Pós-lançamento e Alterações","disciplines":[{"name":"Alterações","tasks":["Abrir SA","Analisar impacto em estoque, ferramental e custos","Atualizar desenhos e BOM","Comunicar áreas impactadas","Atualizar catálogos e manuais","Bloquear produtos inativos"]},{"name":"Conhecimento","tasks":["Registrar falhas de campo","Registrar lições aprendidas","Vincular decisão técnica ao componente","Atualizar banco de conhecimento"]}]}];
+var STORAGE_KEY="fekFlowFinal";
+var defaultState={version:"1.0-final",users:[{id:"usr-felipe",name:"Felipe",email:"",department:"Administração / Engenharia",role:"Administrador",status:"Ativo",phone:""}],sessionId:"usr-felipe",tasks:{},records:[]};
+var state;try{state=JSON.parse(localStorage.getItem(STORAGE_KEY))}catch(e){state=null}if(!state||!state.users||!state.tasks){state=JSON.parse(JSON.stringify(defaultState));persist()}
+var currentTask="",editingUser=null,expanded=false;
+function el(id){return document.getElementById(id)}
+function persist(){localStorage.setItem(STORAGE_KEY,JSON.stringify(state))}
+function esc(v){return String(v||"").replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/"/g,"&quot;")}
+function key(si,di,ti){return si+"|"+di+"|"+ti}
+function activeUser(){return state.users.find(function(u){return u.id===state.sessionId})||state.users[0]}
+function userName(id,fallback){var u=state.users.find(function(x){return x.id===id});return u?u.name:(fallback||"Não definido")}
+function taskData(k){return state.tasks[k]||{}}
+function allTasks(){var a=[];stages.forEach(function(s,si){s.disciplines.forEach(function(d,di){d.tasks.forEach(function(t,ti){var k=key(si,di,ti),dat=taskData(k);a.push({key:k,si:si,di:di,ti:ti,stage:s.name,disc:d.name,title:t,data:dat,status:dat.status||"Pendente",saved:Object.keys(dat).length>0})})})});return a}
+function log(event,stage){state.records.push({date:new Date().toLocaleString("pt-BR"),user:activeUser().name,stage:stage||"-",event:event});persist()}
+function pct(n,t){return t?Math.round(n/t*100):0}
+function initials(n){return String(n||"?").split(/\s+/).slice(0,2).map(function(x){return x.charAt(0)}).join("").toUpperCase()}
+function statusClass(s){return s==="Concluído"?"green":s==="Bloqueado"?"red":s==="Em revisão"?"amber":s==="Em execução"?"blue":""}
+function options(arr,val){return arr.map(function(x){return'<option '+(x===val?'selected':'')+'>'+esc(x)+'</option>'}).join("")}
+function userOptions(val){return state.users.filter(function(u){return u.status==="Ativo"}).map(function(u){return'<option value="'+u.id+'" '+(u.id===val?'selected':'')+'>'+esc(u.name+" • "+u.role)+'</option>'}).join("")}
+function field(name,label,type,opts){var v=taskData(currentTask)[name]||"";if(type==="textarea")return'<label class="field full"><span>'+label+'</span><textarea name="'+name+'" rows="4">'+esc(v)+'</textarea></label>';if(type==="select")return'<label class="field"><span>'+label+'</span><select name="'+name+'">'+options(opts,v)+'</select></label>';return'<label class="field"><span>'+label+'</span><input name="'+name+'" type="'+(type||"text")+'" value="'+esc(v)+'"></label>'}
+function responsibleField(){var v=taskData(currentTask).responsibleId||activeUser().id;return'<label class="field"><span>Responsável</span><select name="responsibleId">'+userOptions(v)+'</select></label>'}
+function taskFormHtml(x){var z=x.title.toLowerCase(),h='<div class="section"><h4>Controle</h4><div class="fields">'+responsibleField()+field("deadline","Prazo","date")+field("status","Status","select",["Pendente","Em execução","Em revisão","Concluído","Bloqueado"])+field("priority","Prioridade","select",["Baixa","Normal","Alta","Crítica"])+"</div></div><div class=\"section\"><h4>Execução da atividade</h4><div class=\"fields\">";
+ if(z.indexOf("solicitante")>=0)h+=field("requester","Solicitante")+field("area","Área")+field("email","E-mail","email")+field("phone","Telefone");
+ else if(z.indexOf("cliente")>=0||z.indexOf("aplicação")>=0)h+=field("client","Cliente")+field("application","Aplicação")+field("family","Família")+field("type","Tipo","select",["Novo produto","Derivação","Alteração","Padronização"]);
+ else if(z.indexOf("carga")>=0||z.indexOf("pbt")>=0||z.indexOf("reações")>=0)h+=field("capacity","Carga / capacidade (kg)","number")+field("pbt","PBT (kg)","number")+field("pbtc","PBTC (kg)","number")+field("technicalResult","Resultado técnico");
+ else if(z.indexOf("material")>=0||z.indexOf("matéria")>=0)h+=field("material","Material")+field("standard","Norma")+field("thickness","Espessura (mm)","number")+field("technicalResult","Justificativa","textarea");
+ else if(z.indexOf("fea")>=0||z.indexOf("fmea")>=0)h+=field("method","Software / método")+field("loadCase","Caso de carga")+field("maxStress","Tensão máxima (MPa)","number")+field("safetyFactor","Fator de segurança","number");
+ else if(z.indexOf("bom")>=0||z.indexOf("código")>=0||z.indexOf("lista")>=0)h+=field("code","Código / montagem")+field("revision","Revisão")+field("items","Quantidade de itens","number")+field("erp","ERP / configurador");
+ else if(z.indexOf("pesagem")>=0||z.indexOf("tara")>=0)h+=field("plannedTare","Tara prevista (kg)","number")+field("actualTare","Tara real (kg)","number")+field("ticket","Ticket")+field("location","Local");
+ else if(z.indexOf("teste")>=0||z.indexOf("aceite")>=0)h+=field("testDate","Data","date")+field("location","Local")+field("testOwner","Responsável pelo teste")+field("testResult","Resultado","select",["Pendente","Aprovado","Reprovado","Aprovado com ressalvas"]);
+ else h+=field("input","Entrada principal")+field("output","Resultado / saída")+field("acceptance","Critério de aceitação")+field("decision","Parecer","select",["Pendente","Aprovado","Reprovado","Requer revisão"]);
+ return h+'</div></div><div class="section"><h4>Evidências e decisão</h4><div class="fields">'+field("evidence","Arquivo, link ou código")+field("revisionRef","Revisão / referência")+field("notes","Observações","textarea")+field("justification","Justificativa da decisão","textarea")+"</div></div>";
+}
+function renderDashboard(){var a=allTasks(),total=a.length,done=a.filter(function(x){return x.status==="Concluído"}).length,doing=a.filter(function(x){return x.status==="Em execução"}).length,review=a.filter(function(x){return x.status==="Em revisão"}).length,blocked=a.filter(function(x){return x.status==="Bloqueado"}).length,evidence=a.filter(function(x){return !!x.data.evidence}).length,p=pct(done,total);
+ el("mTotal").textContent=total;el("mDone").textContent=done;el("mDoing").textContent=doing;el("mReview").textContent=review;el("mBlocked").textContent=blocked;el("mEvidence").textContent=evidence;el("pctText").textContent=p+"% concluído";el("pctBar").style.width=p+"%";
+ el("stageProgress").innerHTML=stages.map(function(s,si){var q=a.filter(function(x){return x.si===si}),d=q.filter(function(x){return x.status==="Concluído"}).length,pp=pct(d,q.length);return'<div class="stage"><div class="stage-head"><strong>'+esc(s.name)+'</strong><span>'+d+'/'+q.length+' • '+pp+'%</span></div><div class="mini"><i style="width:'+pp+'%"></i></div></div>'}).join("");
+ var sts=["Pendente","Em execução","Em revisão","Concluído","Bloqueado"],colors=["#9aa4ae","#3c6fc8","#b7791f","#159a83","#b64040"];el("statusChart").innerHTML=sts.map(function(s,i){var n=a.filter(function(x){return x.status===s}).length;return'<div class="status-row"><span>'+s+'</span><div class="bar"><i style="width:'+pct(n,total)+'%;background:'+colors[i]+'"></i></div><strong>'+n+'</strong></div>'}).join("");
+ var att=a.filter(function(x){return x.status==="Bloqueado"||x.data.priority==="Crítica"||x.data.priority==="Alta"});el("attention").innerHTML=att.length?att.slice(0,12).map(function(x){return'<div class="task"><div><strong>'+esc(x.title)+'</strong><small>'+esc(x.stage+' • '+userName(x.data.responsibleId,x.disc))+'</small></div><span class="pill '+statusClass(x.status)+'">'+esc(x.status==="Pendente"?(x.data.priority||"Alta"):x.status)+'</span></div>'}).join(""):'<div class="empty">Nenhuma atividade crítica ou bloqueada.</div>';
+ var map={};a.forEach(function(x){var o=userName(x.data.responsibleId,"Não definido");map[o]=(map[o]||0)+1});el("owners").innerHTML=Object.keys(map).sort(function(a,b){return map[b]-map[a]}).map(function(o){return'<div class="task"><div><strong>'+esc(o)+'</strong><small>Atividades atribuídas</small></div><span class="pill green">'+map[o]+'</span></div>'}).join("");
+}
+function renderTree(target,workspaceMode){var filter=el("taskFilter")?el("taskFilter").value:"all",me=activeUser().id;el(target).innerHTML=stages.map(function(s,si){var bodies=s.disciplines.map(function(d,di){var taskRows=d.tasks.map(function(t,ti){var k=key(si,di,ti),dat=taskData(k),st=dat.status||"Pendente",show=!workspaceMode||filter==="all"||(filter==="mine"&&dat.responsibleId===me)||(filter==="unassigned"&&!dat.responsibleId)||(filter==="blocked"&&st==="Bloqueado");if(!show)return"";return'<div class="task '+(dat.responsibleId===me?'mine ':'')+(st==="Bloqueado"?'blocked':'')+'"><div><strong>'+esc(t)+'</strong><small>'+esc(userName(dat.responsibleId,d.name))+' • '+esc(st)+(dat.deadline?' • '+esc(dat.deadline):'')+'</small></div><div class="actions"><span class="pill '+statusClass(st)+'">'+esc(st)+'</span>'+(workspaceMode?'<button class="btn soft" data-execute="'+k+'">Executar</button>':'')+'</div></div>'}).join("");if(!taskRows)return"";return'<div class="disc"><h4>'+esc(d.name)+'</h4>'+taskRows+'</div>'}).join("");if(!bodies)return"";return'<div class="stage '+(expanded?'open':'')+'"><div class="stage-head" data-toggle-stage><strong>'+esc(s.name)+'</strong><span class="pill">'+s.disciplines.reduce(function(n,d){return n+d.tasks.length},0)+' tarefas</span></div><div class="stage-body">'+bodies+'</div></div>'}).join("");
+ document.querySelectorAll("[data-toggle-stage]").forEach(function(h){h.onclick=function(){h.parentElement.classList.toggle("open")}});
+ if(workspaceMode)document.querySelectorAll("[data-execute]").forEach(function(b){b.onclick=function(){openTask(b.dataset.execute)}});
+}
+function renderKanban(){var a=allTasks(),cols=["Pendente","Em execução","Em revisão","Concluído","Bloqueado"];el("kanbanBoard").innerHTML=cols.map(function(c){var q=a.filter(function(x){return x.status===c});return'<div class="col"><h3>'+c+' ('+q.length+')</h3>'+q.map(function(x){return'<div class="taskcard"><strong>'+esc(x.title)+'</strong><small>'+esc(x.stage)+'</small><small>'+esc(userName(x.data.responsibleId,"Sem responsável"))+'</small><button class="btn soft" data-execute="'+x.key+'" style="margin-top:8px">Abrir</button></div>'}).join("")+'</div>'}).join("");document.querySelectorAll("#kanbanBoard [data-execute]").forEach(function(b){b.onclick=function(){openTask(b.dataset.execute)}})}
+function renderUsers(){el("activeUserSummary").textContent="Usuário ativo: "+activeUser().name+" • "+activeUser().role;el("userGrid").innerHTML=state.users.map(function(u){var active=u.id===state.sessionId;return'<article class="user-card"><div class="user-main"><div class="avatar">'+initials(u.name)+'</div><div><strong>'+esc(u.name)+'</strong><small>'+esc(u.department||"Setor não informado")+'</small><small>'+esc(u.role)+'</small><span class="pill '+(u.status==="Ativo"?"green":"red")+'">'+u.status+'</span> '+(active?'<span class="pill blue">Usuário atual</span>':'')+'</div></div><div class="actions">'+(!active&&u.status==="Ativo"?'<button class="btn primary" data-login="'+u.id+'">Entrar como</button>':'')+'<button class="btn secondary" data-edit-user="'+u.id+'">Editar</button>'+(u.id!=="usr-felipe"?'<button class="btn danger" data-delete-user="'+u.id+'">Excluir</button>':'')+'</div></article>'}).join("");
+ document.querySelectorAll("[data-login]").forEach(function(b){b.onclick=function(){state.sessionId=b.dataset.login;log("Sessão alterada para "+activeUser().name,"Usuários");persist();renderAll()}});
+ document.querySelectorAll("[data-edit-user]").forEach(function(b){b.onclick=function(){openUser(state.users.find(function(u){return u.id===b.dataset.editUser}))}});
+ document.querySelectorAll("[data-delete-user]").forEach(function(b){b.onclick=function(){if(!confirm("Excluir usuário?"))return;state.users=state.users.filter(function(u){return u.id!==b.dataset.deleteUser});log("Usuário excluído","Usuários");persist();renderAll()}});
+}
+function renderRecords(){el("recordsBody").innerHTML=state.records.length?state.records.slice().reverse().map(function(r){return'<tr><td>'+esc(r.date)+'</td><td>'+esc(r.user)+'</td><td>'+esc(r.stage)+'</td><td>'+esc(r.event)+'</td></tr>'}).join(""):'<tr><td colspan="4">Nenhum evento registrado.</td></tr>'}
+function renderStorage(){var a=allTasks();el("storageSummary").innerHTML='<p><strong>Versão:</strong> '+esc(state.version||"1.0-final")+'</p><p><strong>Usuários:</strong> '+state.users.length+'</p><p><strong>Tarefas com dados:</strong> '+a.filter(function(x){return x.saved}).length+'</p><p><strong>Registros históricos:</strong> '+state.records.length+'</p><p><strong>Tamanho aproximado:</strong> '+Math.round(new Blob([JSON.stringify(state)]).size/1024)+' KB</p>'}
+function renderAll(){el("sessionText").textContent=activeUser().name+" • "+activeUser().role;renderDashboard();renderTree("flowTree",false);renderTree("workspaceTree",true);renderKanban();renderUsers();renderRecords();renderStorage()}
+function openTask(k){currentTask=k;var x=allTasks().find(function(t){return t.key===k});el("taskDialogTitle").textContent=x.title;el("taskDialogContext").textContent=x.stage+" • "+x.disc;el("taskFields").innerHTML=taskFormHtml(x);el("taskDialog").showModal()}
+function openUser(u){editingUser=u?u.id:null;var f=el("userForm");el("userDialogTitle").textContent=u?"Editar usuário":"Novo usuário";f.elements.id.value=u?u.id:"";f.elements.name.value=u?u.name:"";f.elements.email.value=u?u.email||"":"";f.elements.department.value=u?u.department||"":"";f.elements.role.value=u?u.role:"Engenharia / Projetista";f.elements.status.value=u?u.status:"Ativo";f.elements.phone.value=u?u.phone||"":"";el("userDialog").showModal()}
+document.querySelectorAll(".tab").forEach(function(b){b.onclick=function(){document.querySelectorAll(".tab").forEach(function(x){x.classList.remove("active")});document.querySelectorAll(".view").forEach(function(x){x.classList.remove("active")});b.classList.add("active");el(b.dataset.view).classList.add("active");renderAll()}});
+el("expandAll").onclick=function(){expanded=!expanded;el("expandAll").textContent=expanded?"Recolher tudo":"Expandir tudo";renderTree("flowTree",false)};
+el("taskFilter").onchange=function(){renderTree("workspaceTree",true)};
+el("newUserBtn").onclick=function(){openUser(null)};
+el("saveTaskBtn").onclick=function(e){e.preventDefault();var fd=new FormData(el("taskForm")),obj={};fd.forEach(function(v,k){obj[k]=v});obj.updatedAt=new Date().toISOString();obj.updatedBy=activeUser().id;state.tasks[currentTask]=obj;var x=allTasks().find(function(t){return t.key===currentTask});log("Tarefa salva: "+x.title+" — "+obj.status,x.stage);persist();el("taskDialog").close();renderAll()};
+el("saveUserBtn").onclick=function(e){e.preventDefault();var fd=new FormData(el("userForm")),obj={};fd.forEach(function(v,k){obj[k]=v});if(!obj.name.trim()){alert("Informe o nome.");return}if(editingUser){var i=state.users.findIndex(function(u){return u.id===editingUser});state.users[i]=Object.assign({},state.users[i],obj)}else{obj.id="usr-"+Date.now();state.users.push(obj)}log(editingUser?"Usuário atualizado: "+obj.name:"Usuário criado: "+obj.name,"Usuários");persist();el("userDialog").close();renderAll()};
+el("clearRecords").onclick=function(){if(confirm("Limpar todo o histórico?")){state.records=[];persist();renderAll()}};
+el("exportBtn").onclick=function(){var blob=new Blob([JSON.stringify(state,null,2)],{type:"application/json"}),a=document.createElement("a");a.href=URL.createObjectURL(blob);a.download="FEK_Flow_Backup_"+new Date().toISOString().slice(0,10)+".json";a.click();URL.revokeObjectURL(a.href)};
+el("importFile").onchange=function(e){var file=e.target.files[0];if(!file)return;var r=new FileReader();r.onload=function(){try{var data=JSON.parse(r.result);if(!data.users||!data.tasks)throw new Error();state=data;persist();alert("Backup importado com sucesso.");renderAll()}catch(err){alert("Arquivo de backup inválido.")}};r.readAsText(file)};
+el("resetBtn").onclick=function(){if(confirm("Restaurar todo o sistema e apagar os dados locais?")){state=JSON.parse(JSON.stringify(defaultState));persist();renderAll()}};
+window.addEventListener("storage",function(){try{var s=JSON.parse(localStorage.getItem(STORAGE_KEY));if(s){state=s;renderAll()}}catch(e){}});
+renderAll();
+})();
+</script>
+</body></html>
