@@ -1,0 +1,153 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>FEK Flow — Usuários</title>
+<style>
+:root{--bg:#eef2f5;--card:#fff;--ink:#14202c;--muted:#6b7582;--line:#dce3e8;--brand:#0d6d5f;--brand2:#1aa38b;--red:#b64040;--amber:#b9791c;--shadow:0 14px 34px rgba(26,40,52,.08)}
+*{box-sizing:border-box}body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif;background:var(--bg);color:var(--ink)}button,input,select{font:inherit}button{cursor:pointer}
+header{position:sticky;top:0;z-index:30;background:#101923;color:#fff;padding:14px}.brand{display:flex;gap:10px;align-items:center}.logo{width:42px;height:42px;border-radius:13px;background:linear-gradient(135deg,var(--brand2),#77dac6);display:grid;place-items:center;font-size:22px;font-weight:900}.brand strong,.brand span{display:block}.brand span{font-size:12px;color:#b7c3cd}
+.tabs{display:flex;gap:8px;overflow:auto;margin-top:12px}.tab{border:0;border-radius:999px;padding:9px 13px;background:#21303d;color:#c1cad2;text-decoration:none;white-space:nowrap}.tab.active{background:#fff;color:#14202c;font-weight:800}
+main{max-width:1000px;margin:auto;padding:14px 14px 90px}.card{background:#fff;border:1px solid var(--line);border-radius:17px;padding:17px;margin-bottom:14px;box-shadow:var(--shadow)}.hero{background:linear-gradient(135deg,#10312d,#174840);color:#fff}.hero p{color:#c8d8d4}
+h1,h2,h3,h4,p{margin-top:0}h1{font-size:27px}h2{font-size:23px}h3{font-size:18px}p{color:var(--muted);line-height:1.5}.badge{display:inline-flex;padding:6px 10px;border-radius:999px;background:#ddf5ef;color:#0a6558;font-size:11px;font-weight:900;margin-bottom:10px}
+.metrics{display:grid;grid-template-columns:1fr 1fr;gap:10px}.metric{background:#fff;border:1px solid var(--line);border-radius:14px;padding:14px}.metric span,.metric small{display:block;color:var(--muted)}.metric strong{display:block;font-size:27px}
+.toolbar{display:flex;gap:8px;justify-content:space-between;align-items:center;flex-wrap:wrap}.toolbar input,.toolbar select{padding:10px;border:1px solid var(--line);border-radius:10px;background:#fff}
+.btn{border:0;border-radius:10px;padding:10px 12px;font-weight:800}.primary{background:var(--brand);color:#fff}.secondary{background:#fff;border:1px solid var(--line)}.danger{background:var(--red);color:#fff}
+.grid{display:grid;gap:10px}.user-card{border:1px solid var(--line);border-radius:14px;padding:14px;background:#fbfcfd}.user-top{display:flex;gap:12px;justify-content:space-between;align-items:flex-start}.avatar{width:46px;height:46px;border-radius:14px;background:#dff4ef;color:var(--brand);display:grid;place-items:center;font-weight:900;font-size:18px}.user-main{display:flex;gap:10px}.user-card small{display:block;color:var(--muted);margin-top:4px}.pill{display:inline-flex;padding:5px 8px;border-radius:999px;background:#edf1f4;font-size:10px;font-weight:900;margin-top:8px}.active-pill{background:#daf1eb;color:var(--brand)}.inactive-pill{background:#ffe8e8;color:var(--red)}
+.actions{display:flex;gap:7px;flex-wrap:wrap;margin-top:12px}.permissions{display:grid;gap:8px}.perm{display:flex;justify-content:space-between;gap:12px;padding:10px;border-radius:10px;background:#f6f8f9}.perm span{color:var(--muted)}
+dialog{border:0;border-radius:18px;padding:0;width:min(94vw,560px);box-shadow:0 30px 80px rgba(0,0,0,.3)}dialog::backdrop{background:rgba(8,16,24,.6)}.modal{padding:22px}.fields{display:grid;grid-template-columns:1fr 1fr;gap:10px}.field{display:grid;gap:6px}.field.full{grid-column:1/-1}.field input,.field select{width:100%;padding:12px;border:1px solid var(--line);border-radius:10px}.modal-actions{display:flex;justify-content:flex-end;gap:8px;margin-top:16px}.note{padding:11px;border-left:4px solid var(--amber);background:#fff8eb;border-radius:10px;color:#745018;font-size:12px}
+@media(min-width:760px){.metrics{grid-template-columns:repeat(4,1fr)}.grid.users{grid-template-columns:repeat(2,1fr)}}
+</style>
+</head>
+<body>
+<header>
+  <div class="brand"><div class="logo">F</div><div><strong>FEK Flow</strong><span>Usuários, papéis e responsabilidades</span></div></div>
+  <div class="tabs"><a class="tab" href="workspace.html">Workspace</a><a class="tab" href="dashboard.html">Dashboard</a><a class="tab active" href="users.html">Usuários</a></div>
+</header>
+<main>
+  <section class="card hero">
+    <span class="badge">Gestão de acesso — MVP</span>
+    <h1>Usuários do FEK Flow</h1>
+    <p>Cadastre as pessoas, defina função, setor, situação e usuário ativo para atribuir responsabilidades dentro das tarefas.</p>
+    <strong id="activeSummary">Usuário ativo: Felipe</strong>
+  </section>
+
+  <section class="metrics">
+    <div class="metric"><span>Total</span><strong id="mTotal">0</strong><small>usuários cadastrados</small></div>
+    <div class="metric"><span>Ativos</span><strong id="mActive">0</strong><small>podem receber tarefas</small></div>
+    <div class="metric"><span>Administradores</span><strong id="mAdmins">0</strong><small>gestão completa</small></div>
+    <div class="metric"><span>Setores</span><strong id="mDepartments">0</strong><small>áreas representadas</small></div>
+  </section>
+
+  <section class="card">
+    <div class="toolbar">
+      <div><h2>Equipe</h2><p>Selecione “Entrar como” para trocar o usuário ativo do Workspace.</p></div>
+      <button class="btn primary" id="newUser">Novo usuário</button>
+    </div>
+    <div class="toolbar" style="margin:10px 0 14px">
+      <input id="search" placeholder="Buscar nome, e-mail ou setor">
+      <select id="roleFilter"><option value="">Todas as funções</option></select>
+    </div>
+    <div id="userGrid" class="grid users"></div>
+  </section>
+
+  <section class="card">
+    <h2>Matriz de permissões</h2>
+    <div id="permissionMatrix" class="permissions"></div>
+    <div class="note" style="margin-top:12px">Esta versão cria identidade, papéis e atribuição de tarefas no armazenamento local do navegador. Não é autenticação segura. Login real, senhas e sincronização entre dispositivos exigem banco de dados e serviço de autenticação.</div>
+  </section>
+</main>
+
+<dialog id="userDialog">
+<form method="dialog" class="modal" id="userForm">
+  <span class="badge">Cadastro de usuário</span>
+  <h3 id="dialogTitle">Novo usuário</h3>
+  <input type="hidden" name="id">
+  <div class="fields">
+    <label class="field"><span>Nome</span><input name="name" required></label>
+    <label class="field"><span>E-mail</span><input name="email" type="email"></label>
+    <label class="field"><span>Setor</span><select name="department"></select></label>
+    <label class="field"><span>Função</span><select name="role"></select></label>
+    <label class="field"><span>Status</span><select name="status"><option>Ativo</option><option>Inativo</option></select></label>
+    <label class="field"><span>Telefone</span><input name="phone"></label>
+  </div>
+  <div class="modal-actions"><button class="btn secondary" value="cancel">Cancelar</button><button class="btn primary" id="saveUser" value="default">Salvar usuário</button></div>
+</form>
+</dialog>
+
+<script>
+(function(){
+"use strict";
+var roles=["Administrador","Gerência EPR","Engenharia / Projetista","Documentação Técnica","Processos / Qualidade","Leitor"];
+var departments=["Administração / Engenharia","Gerência EPR","EPR Montadora","EPR Peças e Componentes","EPR Sistemas","Documentação Técnica EPR","Processos de Produção","PPCP / PCP","Qualidade","Compras","Logística","Custos / Contabilidade","Vendas / Comercial","Pós-vendas","Marketing"];
+var permissionMap={
+"Administrador":"Usuários, tarefas, gates, aprovações e configurações",
+"Gerência EPR":"Planejamento, distribuição de responsáveis, gates e relatórios",
+"Engenharia / Projetista":"Executar e editar tarefas técnicas atribuídas",
+"Documentação Técnica":"Revisar, aprovar, liberar desenhos, BOM e documentos",
+"Processos / Qualidade":"Verificar produção, protótipo, inspeção e validação",
+"Leitor":"Acompanhar projetos e dashboards sem editar"
+};
+var defaultUsers=[{id:"usr-felipe",name:"Felipe",email:"",department:"Administração / Engenharia",role:"Administrador",status:"Ativo",phone:"",createdAt:new Date().toISOString()}];
+var users;try{users=JSON.parse(localStorage.getItem("fekUsers"))}catch(e){users=null}
+if(!Array.isArray(users)||!users.length){users=defaultUsers;save()}
+var sessionId=localStorage.getItem("fekSession")||users[0].id;
+if(!users.some(function(u){return u.id===sessionId&&u.status!=="Inativo"})){sessionId=users[0].id;localStorage.setItem("fekSession",sessionId)}
+var editingId=null;
+function el(id){return document.getElementById(id)}
+function save(){localStorage.setItem("fekUsers",JSON.stringify(users))}
+function activeUser(){return users.find(function(u){return u.id===sessionId})||users[0]}
+function esc(v){return String(v||"").replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/"/g,"&quot;")}
+function initials(name){return (name||"?").split(/\s+/).slice(0,2).map(function(x){return x.charAt(0)}).join("").toUpperCase()}
+function render(){
+  var q=el("search").value.toLowerCase(),rf=el("roleFilter").value;
+  var list=users.filter(function(u){return (!q||[u.name,u.email,u.department].join(" ").toLowerCase().indexOf(q)>=0)&&(!rf||u.role===rf)});
+  el("activeSummary").textContent="Usuário ativo: "+activeUser().name+" • "+activeUser().role;
+  el("mTotal").textContent=users.length;
+  el("mActive").textContent=users.filter(function(u){return u.status==="Ativo"}).length;
+  el("mAdmins").textContent=users.filter(function(u){return u.role==="Administrador"&&u.status==="Ativo"}).length;
+  el("mDepartments").textContent=new Set(users.map(function(u){return u.department}).filter(Boolean)).size;
+  el("userGrid").innerHTML=list.map(function(u){
+    var active=u.id===sessionId;
+    return '<article class="user-card"><div class="user-top"><div class="user-main"><div class="avatar">'+initials(u.name)+'</div><div><strong>'+esc(u.name)+'</strong><small>'+esc(u.email||"E-mail não informado")+'</small><small>'+esc(u.department)+'</small><span class="pill '+(u.status==="Ativo"?"active-pill":"inactive-pill")+'">'+esc(u.status)+'</span> '+(active?'<span class="pill active-pill">Usuário atual</span>':'')+'</div></div></div><div class="actions">'+(!active&&u.status==="Ativo"?'<button class="btn primary" data-login="'+u.id+'">Entrar como</button>':'')+'<button class="btn secondary" data-edit="'+u.id+'">Editar</button><button class="btn secondary" data-toggle="'+u.id+'">'+(u.status==="Ativo"?"Desativar":"Ativar")+'</button>'+(u.id!=="usr-felipe"?'<button class="btn danger" data-delete="'+u.id+'">Excluir</button>':'')+'</div><small style="margin-top:10px"><strong>Função:</strong> '+esc(u.role)+'</small></article>';
+  }).join("")||"<p>Nenhum usuário encontrado.</p>";
+  el("permissionMatrix").innerHTML=roles.map(function(r){return '<div class="perm"><strong>'+r+'</strong><span>'+permissionMap[r]+'</span></div>'}).join("");
+  bindActions();
+}
+function bindActions(){
+ document.querySelectorAll("[data-login]").forEach(function(b){b.onclick=function(){sessionId=b.dataset.login;localStorage.setItem("fekSession",sessionId);render()}});
+ document.querySelectorAll("[data-edit]").forEach(function(b){b.onclick=function(){openDialog(users.find(function(u){return u.id===b.dataset.edit}))}});
+ document.querySelectorAll("[data-toggle]").forEach(function(b){b.onclick=function(){var u=users.find(function(x){return x.id===b.dataset.toggle});if(!u)return;u.status=u.status==="Ativo"?"Inativo":"Ativo";if(u.id===sessionId&&u.status==="Inativo"){alert("O usuário ativo não pode ser desativado. Troque o usuário primeiro.");u.status="Ativo";return}save();render()}});
+ document.querySelectorAll("[data-delete]").forEach(function(b){b.onclick=function(){if(!confirm("Excluir este usuário? As tarefas continuarão registradas, mas ficarão sem vínculo ativo."))return;users=users.filter(function(u){return u.id!==b.dataset.delete});save();render()}});
+}
+function openDialog(user){
+ editingId=user?user.id:null;
+ el("dialogTitle").textContent=user?"Editar usuário":"Novo usuário";
+ var f=el("userForm");
+ f.elements.id.value=user?user.id:"";
+ f.elements.name.value=user?user.name:"";
+ f.elements.email.value=user?user.email:"";
+ f.elements.department.value=user?user.department:departments[0];
+ f.elements.role.value=user?user.role:"Engenharia / Projetista";
+ f.elements.status.value=user?user.status:"Ativo";
+ f.elements.phone.value=user?user.phone||"":"";
+ el("userDialog").showModal();
+}
+el("roleFilter").innerHTML='<option value="">Todas as funções</option>'+roles.map(function(r){return '<option>'+r+'</option>'}).join("");
+el("userForm").elements.department.innerHTML=departments.map(function(d){return '<option>'+d+'</option>'}).join("");
+el("userForm").elements.role.innerHTML=roles.map(function(r){return '<option>'+r+'</option>'}).join("");
+el("newUser").onclick=function(){openDialog(null)};
+el("search").oninput=render;el("roleFilter").onchange=render;
+el("saveUser").onclick=function(e){
+ e.preventDefault();var fd=new FormData(el("userForm")),obj={};fd.forEach(function(v,k){obj[k]=v});
+ if(!obj.name.trim()){alert("Informe o nome.");return}
+ if(editingId){var idx=users.findIndex(function(u){return u.id===editingId});if(idx>=0)users[idx]=Object.assign({},users[idx],obj)}
+ else{obj.id="usr-"+Date.now();obj.createdAt=new Date().toISOString();users.push(obj)}
+ save();el("userDialog").close();render();
+};
+render();
+})();
+</script>
+</body>
+</html>
