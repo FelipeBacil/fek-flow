@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#101923">
+<title>FEK Flow — Administração</title>
+<style>
+:root{--bg:#eef2f5;--card:#fff;--ink:#14202c;--muted:#6b7582;--line:#dce3e8;--brand:#0d6d5f;--blue:#3c6fc8}
+*{box-sizing:border-box}body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif;background:var(--bg);color:var(--ink)}
+header{position:sticky;top:0;z-index:30;background:#101923;color:#fff;padding:14px}.brand-wrap{display:flex;gap:10px;align-items:center}.logo{width:42px;height:42px;border-radius:13px;background:linear-gradient(135deg,#1aa38b,#77dac6);display:grid;place-items:center;font-size:22px;font-weight:900}.brand{font-size:16px;font-weight:900}.sub{font-size:12px;color:#b8c3cd;margin-top:3px}
+.tabs{display:flex;gap:8px;overflow:auto;margin-top:12px}.tab{border:0;border-radius:999px;padding:9px 13px;background:#21303d;color:#c1cad2;text-decoration:none;white-space:nowrap}.tab.active{background:#fff;color:#14202c;font-weight:800}
+main{max-width:1050px;margin:auto;padding:14px 14px 90px}.card{background:#fff;border:1px solid var(--line);border-radius:16px;padding:18px;margin-bottom:14px}.hero{background:linear-gradient(135deg,#10312d,#174840);color:#fff}.hero p{color:#c8d8d4}
+h1,h2,h3,p{margin-top:0}p{color:var(--muted);line-height:1.5}.badge{display:inline-block;background:#ddf5ef;color:#0a6558;padding:6px 10px;border-radius:999px;font-size:11px;font-weight:900;margin-bottom:9px}
+.grid{display:grid;gap:12px}.modules{grid-template-columns:1fr}.module{display:block;text-decoration:none;color:inherit;border:1px solid var(--line);border-radius:14px;padding:18px;background:#fbfcfd}.module:hover{border-color:#96c8bd;background:#f3fbf8}.module strong{display:block;font-size:18px;margin-bottom:6px}.module span{color:var(--muted);font-size:14px;line-height:1.45}.icon{width:42px;height:42px;border-radius:12px;background:#dff4ef;color:var(--brand);display:grid;place-items:center;font-weight:900;margin-bottom:12px}
+.metrics{display:grid;grid-template-columns:1fr 1fr;gap:10px}.metric{background:#fff;border:1px solid var(--line);border-radius:13px;padding:14px}.metric span,.metric small{display:block;color:var(--muted)}.metric strong{display:block;font-size:26px}
+@media(min-width:760px){.modules{grid-template-columns:repeat(3,1fr)}.metrics{grid-template-columns:repeat(4,1fr)}}
+</style>
+</head>
+<body>
+<header>
+<div class="brand-wrap"><div class="logo">F</div><div><div class="brand">FEK Flow</div><div class="sub">Administração da plataforma de Engenharia de Produto</div></div></div>
+<div class="tabs"><a class="tab active" href="/fek-flow/admin.html">Administração</a><a class="tab" href="/fek-flow/projects.html">Projetos</a><a class="tab" href="/fek-flow/users.html">Usuários</a></div>
+</header>
+<main>
+<section class="card hero"><span class="badge">Ambiente administrativo</span><h1>Central de controle do FEK Flow</h1><p>Gerencie o portfólio, usuários e estrutura global da plataforma. O trabalho técnico acontece dentro de cada projeto.</p></section>
+<section class="metrics">
+<div class="metric"><span>Ambiente</span><strong>Admin</strong><small>gestão global</small></div>
+<div class="metric"><span>Projetos</span><strong>Central</strong><small>portfólio completo</small></div>
+<div class="metric"><span>Usuários</span><strong>Controlado</strong><small>papéis e acessos</small></div>
+<div class="metric"><span>Execução</span><strong>Projeto</strong><small>workspace operacional</small></div>
+</section>
+<section class="card"><h2>Módulos administrativos</h2><div class="grid modules">
+<a class="module" href="/fek-flow/projects.html"><div class="icon">P</div><strong>Projetos</strong><span>Criar projetos, abrir o portfólio e acessar o ambiente operacional de cada desenvolvimento.</span></a>
+<a class="module" href="/fek-flow/users.html"><div class="icon">U</div><strong>Usuários</strong><span>Cadastrar pessoas, definir funções, setores e permissões da plataforma.</span></a>
+<a class="module" href="/fek-flow/dashboard.html"><div class="icon">D</div><strong>Dashboard executivo</strong><span>Acompanhar indicadores globais, carga de trabalho e atividades críticas.</span></a>
+</div></section>
+</main>
+</body>
+</html>
