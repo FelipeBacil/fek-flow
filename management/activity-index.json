@@ -1,0 +1,93 @@
+{
+  "schema_version": "1.0.0",
+  "project": {
+    "id": "FEK",
+    "name": "Fengbir Engineering Kernel",
+    "status": "active"
+  },
+  "generated_at": "2026-07-11T04:30:14.473442+00:00",
+  "dashboard": {
+    "source": "FEK",
+    "export_file": "management/exports/fek-dashboard.json",
+    "consumer": "Fengbir Site"
+  },
+  "modules": [
+    {
+      "id": "core",
+      "name": "Core",
+      "status": "planned",
+      "progress": 0,
+      "activities": []
+    },
+    {
+      "id": "geometry_engine",
+      "name": "Geometry Engine",
+      "status": "planned",
+      "progress": 0,
+      "activities": []
+    },
+    {
+      "id": "topology_engine",
+      "name": "Topology Engine",
+      "status": "planned",
+      "progress": 0,
+      "activities": []
+    },
+    {
+      "id": "engineering_model",
+      "name": "Engineering Model",
+      "status": "planned",
+      "progress": 0,
+      "activities": []
+    },
+    {
+      "id": "material_engine",
+      "name": "Material Engine",
+      "status": "planned",
+      "progress": 0,
+      "activities": []
+    },
+    {
+      "id": "load_engine",
+      "name": "Load Engine",
+      "status": "planned",
+      "progress": 0,
+      "activities": []
+    },
+    {
+      "id": "mesh_engine",
+      "name": "Mesh Engine",
+      "status": "planned",
+      "progress": 0,
+      "activities": []
+    },
+    {
+      "id": "simulation_engine",
+      "name": "Simulation Engine",
+      "status": "planned",
+      "progress": 0,
+      "activities": []
+    },
+    {
+      "id": "visualization_engine",
+      "name": "Visualization Engine",
+      "status": "planned",
+      "progress": 0,
+      "activities": []
+    },
+    {
+      "id": "report_engine",
+      "name": "Report Engine",
+      "status": "planned",
+      "progress": 0,
+      "activities": []
+    },
+    {
+      "id": "solver_interface",
+      "name": "Solver Interface",
+      "status": "planned",
+      "progress": 0,
+      "activities": []
+    }
+  ]
+}

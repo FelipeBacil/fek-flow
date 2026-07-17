@@ -1,0 +1,182 @@
+# FEK — Fengbir Engineering Kernel
+
+## 1. Objetivo
+
+O FEK é o núcleo computacional da Fengbir.  
+Sua função é transformar arquivos CAD, dados geométricos, materiais e parâmetros operacionais em informações de engenharia reutilizáveis por diferentes motores de simulação.
+
+## 2. Visão geral
+
+Fluxo principal:
+
+CAD / DXF / STEP / Dados manuais
+↓
+CAD Interpreter
+↓
+Engineering Graph
+↓
+Geometry Kernel
+↓
+Material Kernel
+↓
+Structural Kernel
+↓
+Dynamic Kernel
+↓
+Fatigue Kernel
+↓
+Report Kernel
+
+## 3. Módulos principais
+
+### 3.1 CAD Interpreter
+
+Responsável por ler arquivos CAD e extrair:
+
+- sólidos
+- faces
+- arestas
+- vértices
+- volume
+- área superficial
+- centro de massa
+- bounding box
+- furos
+- recortes
+- espessuras
+- padrões geométricos
+
+Formatos previstos:
+
+- DXF
+- STEP / STP
+- futuramente SLDPRT via exportação automática
+
+### 3.2 Geometry Kernel
+
+Responsável por calcular propriedades geométricas:
+
+- área
+- perímetro
+- centroide
+- Ix / Iy / Ixy
+- volume
+- massa
+- raio de giração
+- módulo resistente
+- propriedades 3D
+
+### 3.3 Material Kernel
+
+Responsável por armazenar e fornecer dados de materiais:
+
+- densidade
+- limite de escoamento
+- limite de resistência
+- módulo de elasticidade
+- coeficiente de Poisson
+- curva S-N
+- aplicação recomendada
+
+### 3.4 Structural Kernel
+
+Responsável por cálculos estruturais:
+
+- DCL
+- reações
+- cortante
+- momento fletor
+- tensão
+- deflexão
+- fator de segurança
+
+### 3.5 Dynamic Kernel
+
+Responsável por:
+
+- vibração
+- transmissibilidade
+- rigidez
+- amortecimento
+- resposta em frequência
+- excitação por pista
+
+### 3.6 Fatigue Kernel
+
+Responsável por:
+
+- dano acumulado
+- vida estrutural
+- ciclos
+- carregamentos variáveis
+- mapa de vida
+
+### 3.7 Report Kernel
+
+Responsável por gerar:
+
+- JSON
+- Markdown
+- PDF futuro
+- relatório técnico
+- relatório executivo
+- relatório para cliente
+
+## 4. Engineering Graph
+
+Cada peça será representada como um grafo de engenharia.
+
+Exemplo:
+
+Longarina
+├── Geometria
+├── Material
+├── Faces
+├── Arestas
+├── Furos
+├── Recortes
+├── Centro de massa
+├── Propriedades estruturais
+└── Histórico de simulação
+
+## 5. Modelo interno de peça
+
+```json
+{
+  "part_id": "longarina_001",
+  "part_name": "Longarina Principal",
+  "source_file": "longarina.step",
+  "source_type": "STEP",
+  "material": {
+    "name": "S700MC",
+    "density_kg_m3": 7850,
+    "yield_strength_mpa": 700
+  },
+  "geometry": {
+    "type": "solid",
+    "volume_mm3": 0,
+    "surface_area_mm2": 0,
+    "center_of_mass_mm": {
+      "x": 0,
+      "y": 0,
+      "z": 0
+    },
+    "bounding_box_mm": {
+      "length": 0,
+      "width": 0,
+      "height": 0
+    }
+  },
+  "features": {
+    "holes": [],
+    "slots": [],
+    "cuts": [],
+    "bends": []
+  },
+  "structural_properties": {
+    "mass_kg": 0,
+    "Ix_mm4": 0,
+    "Iy_mm4": 0,
+    "Iz_mm4": 0
+  }
+}

@@ -1,0 +1,69 @@
+{
+  "project": "FEK - Fengbir Engineering Kernel",
+  "version": "0.1",
+  "activities": [
+    {
+      "id": "GEO-001",
+      "module": "Geometry",
+      "title": "Leitura DXF",
+      "status": "CONCLUÍDO",
+      "priority": "CRÍTICA",
+      "fes": "FES-002",
+      "notes": "Leitura 2D validada."
+    },
+    {
+      "id": "GEO-002",
+      "module": "Geometry",
+      "title": "Leitura STEP",
+      "status": "CONCLUÍDO",
+      "priority": "CRÍTICA",
+      "fes": "FES-002",
+      "notes": "Leitura 3D validada com CadQuery/OpenCascade."
+    },
+    {
+      "id": "GEO-003",
+      "module": "Geometry",
+      "title": "Leitura de múltiplos sólidos",
+      "status": "CONCLUÍDO",
+      "priority": "CRÍTICA",
+      "fes": "FES-002",
+      "notes": "Validado com longarina contendo 3 sólidos."
+    },
+    {
+      "id": "TOP-001",
+      "module": "Topology",
+      "title": "Mapeamento de faces",
+      "status": "CONCLUÍDO",
+      "priority": "CRÍTICA",
+      "fes": "FES-003",
+      "notes": "Faces, áreas, centros e bounding boxes mapeados."
+    },
+    {
+      "id": "TOP-002",
+      "module": "Topology",
+      "title": "Classificação de faces",
+      "status": "CONCLUÍDO",
+      "priority": "ALTA",
+      "fes": "FES-003",
+      "notes": "Classificação geométrica básica validada."
+    },
+    {
+      "id": "TOP-003",
+      "module": "Topology",
+      "title": "Mapeamento de arestas",
+      "status": "BACKLOG",
+      "priority": "ALTA",
+      "fes": "FES-003",
+      "notes": "Próxima etapa do modelo topológico."
+    },
+    {
+      "id": "ENG-001",
+      "module": "Engineering Model",
+      "title": "Criar objeto Assembly",
+      "status": "BACKLOG",
+      "priority": "CRÍTICA",
+      "fes": "FES-004",
+      "notes": "Base orientada a objetos do FEK."
+    }
+  ]
+}

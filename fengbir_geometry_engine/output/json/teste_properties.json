@@ -1,0 +1,39 @@
+{
+  "component": "longarina",
+  "geometry_type": "2D_section",
+  "source_file": "teste.dxf",
+  "unit": "mm",
+  "material": {
+    "name": "S700MC",
+    "density_kg_m3": 7850,
+    "yield_strength_mpa": 700
+  },
+  "properties": {
+    "area_mm2": 5000.0,
+    "centroid_x_mm": 2114.331143764961,
+    "centroid_y_mm": 2111.6623305607936,
+    "Ix_mm4": 1041666.6665916443,
+    "Iy_mm4": 4166666.666595459,
+    "Ixy_mm4": 9.1552734375e-05,
+    "Wx_mm3": 41666.66666363773,
+    "Wy_mm3": 83333.33333187584,
+    "rx_mm": 14.433756729220875,
+    "ry_mm": 28.86751345923462,
+    "xmin_mm": 2064.331143764941,
+    "xmax_mm": 2164.331143764941,
+    "ymin_mm": 2086.662330560777,
+    "ymax_mm": 2136.662330560778,
+    "width_mm": 100.0,
+    "height_mm": 50.000000000001364,
+    "perimeter_mm": 300.00000000000273,
+    "volume_m3_per_m": 0.005,
+    "mass_kg_per_m": 39.25
+  },
+  "validation": {
+    "status": "ok",
+    "closed_contour": true,
+    "self_intersection": false,
+    "area_positive": true,
+    "message": "Geometria válida."
+  }
+}
