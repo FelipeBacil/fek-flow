@@ -17,3 +17,5 @@ Fonte oficial:
 Arquivo de consumo do dashboard:
 
 `management/exports/fek-dashboard.json`
+
+Teste de conector – 19/07/2026
