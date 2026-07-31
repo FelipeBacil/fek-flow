@@ -110,10 +110,11 @@ module.exports = async function handler(req, res) {
     }
 
     const sql = neon(connectionString);
+    const singletonId = "main";
 
     await sql`
       CREATE TABLE IF NOT EXISTS fek_flow_state (
-        id INTEGER PRIMARY KEY,
+        id TEXT PRIMARY KEY,
         revision BIGINT NOT NULL DEFAULT 0,
         state JSONB NOT NULL,
         updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
@@ -121,12 +122,22 @@ module.exports = async function handler(req, res) {
     `;
 
     await sql`
+      ALTER TABLE fek_flow_state
+      ALTER COLUMN id TYPE TEXT USING id::text
+    `;
+
+    await sql`
       INSERT INTO fek_flow_state (id, revision, state)
-      VALUES (1, 0, ${JSON.stringify(emptyState())}::jsonb)
+      VALUES (${singletonId}, 0, ${JSON.stringify(emptyState())}::jsonb)
       ON CONFLICT (id) DO NOTHING
     `;
 
-    const rows = await sql`SELECT revision, state FROM fek_flow_state WHERE id = 1`;
+    const rows = await sql`
+      SELECT revision, state
+      FROM fek_flow_state
+      WHERE id = ${singletonId}
+    `;
+
     const current = rows[0] || { revision: 0, state: emptyState() };
     const state = normalizeState(current.state);
     const revision = Number(current.revision || 0);
@@ -149,7 +160,7 @@ module.exports = async function handler(req, res) {
       SET revision = ${nextRevision},
           state = ${JSON.stringify(state)}::jsonb,
           updated_at = NOW()
-      WHERE id = 1
+      WHERE id = ${singletonId}
     `;
 
     return res.status(200).json({ revision: nextRevision, state, ...result });
